@@ -41,7 +41,9 @@ namespace Gibbed.PortableExecutable
 
         public Image.SectionHeader GetSection(string name)
         {
-            return this.Sections.SingleOrDefault(candidate => candidate.Name == name);
+            return this.Sections
+                .Where(candidate => candidate.Name == name)
+                .FirstOrDefault();
         }
 
         public UInt32 GetExport(UInt32 ordinal)
@@ -82,12 +84,36 @@ namespace Gibbed.PortableExecutable
             return 0;
         }
 
+        public uint GetMemoryAddress(uint fileOffset, bool relative)
+        {
+            foreach (Image.SectionHeader section in this.Sections)
+            {
+                if (fileOffset >= section.PointerToRawData && fileOffset < (section.PointerToRawData + section.SizeOfRawData))
+                {
+                    var virtualAddress =
+                        section.VirtualAddress + (fileOffset - section.PointerToRawData);
+
+                    if (relative == true)
+                    {
+                        virtualAddress += this.NTHeaders32.OptionalHeader.ImageBase;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         public uint GetFileOffset(uint virtualAddress)
         {
             return this.GetFileOffset(virtualAddress, false);
         }
 
-        public void Read(Stream input)
+        public void Serialize(Stream output)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deserialize(Stream input)
         {
             this.DosHeader = input.ReadStructure<Image.DosHeader>();
             if (this.DosHeader.Magic != 0x5A4D) // MZ
