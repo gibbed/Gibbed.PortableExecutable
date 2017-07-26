@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2017 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,48 +20,68 @@
  *    distribution.
  */
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Gibbed.PortableExecutable.Image
 {
-	[StructLayout(LayoutKind.Sequential)]
-	public struct OptionalHeader32
-	{
-	    // Standard fields.
-		public UInt16 Magic;
-		public byte MajorLinkerVersion;
-		public byte MinorLinkerVersion;
-		public UInt32 SizeOfCode;
-		public UInt32 SizeOfInitializedData;
-		public UInt32 SizeOfUninitializedData;
-		public UInt32 AddressOfEntryPoint;
-		public UInt32 BaseOfCode;
-		public UInt32 BaseOfData;
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/ms680339.aspx
+    [StructLayout(LayoutKind.Sequential)]
+    public struct OptionalHeader32 : IOptionalHeader
+    {
+        public const ushort Signature = 0x10B; // IMAGE_NT_OPTIONAL_HDR32_MAGIC
 
-		// NT additional fields.
-		public UInt32 ImageBase;
-		public UInt32 SectionAlignment;
-		public UInt32 FileAlignment;
-		public UInt16 MajorOperatingSystemVersion;
-		public UInt16 MinorOperatingSystemVersion;
-		public UInt16 MajorImageVersion;
-		public UInt16 MinorImageVersion;
-		public UInt16 MajorSubsystemVersion;
-		public UInt16 MinorSubsystemVersion;
-		public UInt32 Win32VersionValue;
-		public UInt32 SizeOfImage;
-		public UInt32 SizeOfHeaders;
-		public UInt32 CheckSum;
-		public UInt16 Subsystem;
-		public UInt16 DllCharacteristics;
-		public UInt32 SizeOfStackReserve;
-		public UInt32 SizeOfStackCommit;
-		public UInt32 SizeOfHeapReserve;
-		public UInt32 SizeOfHeapCommit;
-		public UInt32 LoaderFlags;
-		public UInt32 NumberOfRvaAndSizes;
-		//[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-        //ImageDataDirectory[] DataDirectory;
-	}
+        // Standard fields.
+        public ushort Magic;
+        public byte MajorLinkerVersion;
+        public byte MinorLinkerVersion;
+        public uint SizeOfCode;
+        public uint SizeOfInitializedData;
+        public uint SizeOfUninitializedData;
+        public uint AddressOfEntryPoint;
+        public uint BaseOfCode;
+        public uint BaseOfData;
+
+        // NT additional fields.
+        public uint ImageBase;
+        public uint SectionAlignment;
+        public uint FileAlignment;
+        public ushort MajorOperatingSystemVersion;
+        public ushort MinorOperatingSystemVersion;
+        public ushort MajorImageVersion;
+        public ushort MinorImageVersion;
+        public ushort MajorSubsystemVersion;
+        public ushort MinorSubsystemVersion;
+        public uint Win32VersionValue;
+        public uint SizeOfImage;
+        public uint SizeOfHeaders;
+        public uint CheckSum;
+        public ushort Subsystem;
+        public ushort DllCharacteristics;
+        public uint SizeOfStackReserve;
+        public uint SizeOfStackCommit;
+        public uint SizeOfHeapReserve;
+        public uint SizeOfHeapCommit;
+        public uint LoaderFlags;
+        public uint NumberOfRvaAndSizes;
+
+        ushort IOptionalHeader.Magic
+        {
+            get { return this.Magic; }
+        }
+
+        ushort IOptionalHeader.Signature
+        {
+            get { return Signature; }
+        }
+
+        ulong IOptionalHeader.ImageBase
+        {
+            get { return this.ImageBase; }
+        }
+
+        uint IOptionalHeader.NumberOfRvaAndSizes
+        {
+            get { return this.NumberOfRvaAndSizes; }
+        }
+    }
 }

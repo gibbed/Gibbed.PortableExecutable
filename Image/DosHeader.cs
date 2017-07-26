@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2017 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,110 +20,110 @@
  *    distribution.
  */
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Gibbed.PortableExecutable.Image
 {
-	[StructLayout(LayoutKind.Sequential)]
-	public struct DosHeader
-	{
-		/// <summary>
-		/// Magic number
-		/// </summary>
-		public UInt16 Magic;
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DosHeader
+    {
+        public const ushort Signature = 0x5A4D; // 'MZ'
 
-		/// <summary>
-		/// Bytes on last page of file
-		/// </summary>
-		public UInt16 e_cblp;
-		
-		/// <summary>
-		/// Pages in file
-		/// </summary>
-		public UInt16 PageCount;
-		
-		/// <summary>
-		/// Relocations
-		/// </summary>
-		public UInt16 RelocationCount;
-		
-		/// <summary>
-		/// Size of header in paragraphs
-		/// </summary>
-		public UInt16 e_cparhdr;
-		
-		/// <summary>
-		/// Minimum extra paragraphs needed
-		/// </summary>
-		public UInt16 MinimumAlloc;
-		
-		/// <summary>
-		/// Maximum extra paragraphs needed
-		/// </summary>
-		public UInt16 MaxAlloc;
-		
-		/// <summary>
-		/// Initial (relative) SS value
-		/// </summary>
-		public UInt16 SS;
-		
-		/// <summary>
-		/// Initial SP value
-		/// </summary>
-		public UInt16 SP;
-		
-		/// <summary>
-		/// Checksum
-		/// </summary>
-		public UInt16 Checksum;
-		
-		/// <summary>
-		/// Initial IP value
-		/// </summary>
-		public UInt16 IP;
-		
-		/// <summary>
-		/// Initial (relative) CS value
-		/// </summary>
-		public UInt16 CS;
-		
-		/// <summary>
-		/// File address of relocation table
-		/// </summary>
-		public UInt16 RelocOffset;
-		
-		/// <summary>
-		/// Overlay number
-		/// </summary>
-		public UInt16 OverlayNumber;
+        /// <summary>
+        /// Magic number
+        /// </summary>
+        public ushort Magic;
 
-		/// <summary>
-		/// Reserved words
-		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-		public UInt16[] Reserved;
-		
-	
-		/// <summary>
-		/// OEM identifier (for e_oeminfo)
-		/// </summary>
-		public UInt16 OEMId;
-		
-		/// <summary>
-		/// OEM information; e_oemid specific
-		/// </summary>
-		public UInt16 OEMInfo;
-		
-		/// <summary>
-		/// Reserved words
-		/// </summary>
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-		public UInt16[] Reserved2;
-		
-		/// <summary>
-		/// File address of new exe header
-		/// </summary>
-		public UInt32 NewExeOffset;
-	}
+        /// <summary>
+        /// Bytes on last page of file
+        /// </summary>
+        public ushort e_cblp;
+
+        /// <summary>
+        /// Pages in file
+        /// </summary>
+        public ushort PageCount;
+
+        /// <summary>
+        /// Relocations
+        /// </summary>
+        public ushort RelocationCount;
+
+        /// <summary>
+        /// Size of header in paragraphs
+        /// </summary>
+        public ushort e_cparhdr;
+
+        /// <summary>
+        /// Minimum extra paragraphs needed
+        /// </summary>
+        public ushort MinimumAlloc;
+
+        /// <summary>
+        /// Maximum extra paragraphs needed
+        /// </summary>
+        public ushort MaxAlloc;
+
+        /// <summary>
+        /// Initial (relative) SS value
+        /// </summary>
+        public ushort SS;
+
+        /// <summary>
+        /// Initial SP value
+        /// </summary>
+        public ushort SP;
+
+        /// <summary>
+        /// Checksum
+        /// </summary>
+        public ushort Checksum;
+
+        /// <summary>
+        /// Initial IP value
+        /// </summary>
+        public ushort IP;
+
+        /// <summary>
+        /// Initial (relative) CS value
+        /// </summary>
+        public ushort CS;
+
+        /// <summary>
+        /// File address of relocation table
+        /// </summary>
+        public ushort RelocOffset;
+
+        /// <summary>
+        /// Overlay number
+        /// </summary>
+        public ushort OverlayNumber;
+
+        /// <summary>
+        /// Reserved words
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public ushort[] Reserved;
+
+        /// <summary>
+        /// OEM identifier
+        /// </summary>
+        public ushort OEMId;
+
+        /// <summary>
+        /// OEM information; OEM identifier specific
+        /// </summary>
+        public ushort OEMInfo;
+
+        /// <summary>
+        /// Reserved words
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
+        public ushort[] Reserved2;
+
+        /// <summary>
+        /// File address of new exe header
+        /// </summary>
+        public uint NewExeOffset;
+    }
 }

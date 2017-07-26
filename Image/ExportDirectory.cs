@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2017 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,7 +20,6 @@
  *    distribution.
  */
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Gibbed.PortableExecutable.Image
@@ -28,16 +27,16 @@ namespace Gibbed.PortableExecutable.Image
     [StructLayout(LayoutKind.Sequential)]
     public struct ExportDirectory
     {
-        public UInt32 Characteristics;
-        public UInt32 TimeDateStamp;
-        public UInt16 MajorVersion;
-        public UInt16 MinorVersion;
-        public UInt32 Name;
-        public UInt32 Base;
-        public UInt32 NumberOfFunctions;
-        public UInt32 NumberOfNames;
-        public UInt32 AddressOfFunctions;
-        public UInt32 AddressOfNames;
-        public UInt32 AddressOfNameOrdinals;
+        public uint Characteristics;
+        public uint TimeDateStamp;
+        public ushort MajorVersion;
+        public ushort MinorVersion;
+        public uint Name;
+        public uint Base;
+        public uint NumberOfFunctions;
+        public uint NumberOfNames;
+        public uint AddressOfFunctions;
+        public uint AddressOfNames;
+        public uint AddressOfNameOrdinals;
     }
 }

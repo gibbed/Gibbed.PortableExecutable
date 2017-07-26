@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2017 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,15 +20,14 @@
  *    distribution.
  */
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Gibbed.PortableExecutable.Image
 {
-	[StructLayout(LayoutKind.Sequential)]
-	public struct DataDirectory
-	{
-		public UInt32 VirtualAddress;
-		public UInt32 Size;
-	}
+    [StructLayout(LayoutKind.Sequential)]
+    public struct DataDirectory
+    {
+        public uint VirtualAddress;
+        public uint Size;
+    }
 }

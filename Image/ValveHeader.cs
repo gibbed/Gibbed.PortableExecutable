@@ -1,4 +1,4 @@
-﻿/* Copyright (c) 2011 Rick (rick 'at' gibbed 'dot' us)
+﻿/* Copyright (c) 2017 Rick (rick 'at' gibbed 'dot' us)
  * 
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
@@ -20,19 +20,19 @@
  *    distribution.
  */
 
-using System;
 using System.Runtime.InteropServices;
 
 namespace Gibbed.PortableExecutable.Image
 {
-	[StructLayout(LayoutKind.Sequential)]
-	public struct ValveHeader
-	{
-		public UInt32 Magic;
-		public UInt32 Version;
-		public UInt32 ImageSize;
-		public UInt32 TimeStamp;
-		[MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-		public byte[] Hash;
-	}
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ValveHeader
+    {
+        public uint Magic;
+        public uint Version;
+        public uint ImageSize;
+        public uint TimeStamp;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
+        public byte[] Hash;
+    }
 }

@@ -67,13 +67,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseExecutable.cs" />
     <Compile Include="Executable32.cs" />
+    <Compile Include="Executable64.cs" />
     <Compile Include="Image\DataDirectory.cs" />
     <Compile Include="Image\DosHeader.cs" />
     <Compile Include="Image\ExportDirectory.cs" />
-    <Compile Include="Image\FileHeader.cs" />
-    <Compile Include="Image\NTHeaders32.cs" />
+    <Compile Include="Image\CoffHeader.cs" />
+    <Compile Include="Image\IOptionalHeader.cs" />
+    <Compile Include="Image\PeHeaders.cs" />
     <Compile Include="Image\OptionalHeader32.cs" />
+    <Compile Include="Image\OptionalHeader64.cs" />
     <Compile Include="Image\SectionHeader.cs" />
     <Compile Include="Image\ValveHeader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
