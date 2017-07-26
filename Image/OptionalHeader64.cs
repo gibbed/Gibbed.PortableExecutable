@@ -63,6 +63,9 @@ namespace Gibbed.PortableExecutable.Image
         public uint LoaderFlags;
         public uint NumberOfRvaAndSizes;
 
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public DataDirectory[] DataDirectories;
+
         ushort IOptionalHeader.Magic
         {
             get { return this.Magic; }
@@ -81,6 +84,11 @@ namespace Gibbed.PortableExecutable.Image
         uint IOptionalHeader.NumberOfRvaAndSizes
         {
             get { return this.NumberOfRvaAndSizes; }
+        }
+
+        DataDirectory[] IOptionalHeader.DataDirectories
+        {
+            get { return this.DataDirectories; }
         }
     }
 }

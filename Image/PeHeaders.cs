@@ -26,12 +26,12 @@ namespace Gibbed.PortableExecutable.Image
 {
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms680336.aspx
     [StructLayout(LayoutKind.Sequential)]
-    public struct PeHeaders<TOptionalHeader>
+    public struct PeHeaders
     {
         public const uint Signature = 0x4550; // 'PE'
 
         public uint Magic;
         public CoffHeader FileHeader;
-        public TOptionalHeader OptionalHeader;
+        //public TOptionalHeader OptionalHeader;
     }
 }

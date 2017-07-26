@@ -28,5 +28,6 @@ namespace Gibbed.PortableExecutable.Image
         ushort Signature { get; }
         ulong ImageBase { get; }
         uint NumberOfRvaAndSizes { get; }
+        DataDirectory[] DataDirectories { get; }
     }
 }

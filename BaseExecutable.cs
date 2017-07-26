@@ -38,13 +38,11 @@ namespace Gibbed.PortableExecutable
         private Image.DosHeader _DosHeader;
         private Image.CoffHeader _CoffHeader;
         private TOptionalHeader _OptionalHeader;
-        private readonly List<Image.DataDirectory> _Directories;
         private readonly List<Image.SectionHeader> _Sections;
         #endregion
 
         internal BaseExecutable()
         {
-            this._Directories = new List<Image.DataDirectory>();
             this._Sections = new List<Image.SectionHeader>();
         }
 
@@ -71,11 +69,6 @@ namespace Gibbed.PortableExecutable
         {
             get { return this._OptionalHeader; }
             set { this._OptionalHeader = value; }
-        }
-
-        public List<Image.DataDirectory> Directories
-        {
-            get { return this._Directories; }
         }
 
         public List<Image.SectionHeader> Sections
@@ -124,7 +117,7 @@ namespace Gibbed.PortableExecutable
             return 0;
         }
 
-        public long GetFileOffset(uint virtualAddress)
+        public long GetFileOffset(ulong virtualAddress)
         {
             return this.GetFileOffset(virtualAddress, false);
         }
@@ -159,28 +152,22 @@ namespace Gibbed.PortableExecutable
             }
 
             input.Position = basePosition + dosHeader.NewExeOffset;
-            var peHeaders = input.ReadStructure<Image.PeHeaders<TOptionalHeader>>();
-
-            if (peHeaders.Magic != Image.PeHeaders<TOptionalHeader>.Signature)
+            var peHeaders = input.ReadStructure<Image.PeHeaders>();
+            if (peHeaders.Magic != Image.PeHeaders.Signature)
             {
                 throw new FormatException("NT headers has bad signature");
             }
 
-            if (peHeaders.FileHeader.SizeOfOptionalHeader != Marshal.SizeOf(typeof(TOptionalHeader)))
+            var optionalHeaderSize = Marshal.SizeOf(typeof(TOptionalHeader));
+            if (peHeaders.FileHeader.SizeOfOptionalHeader != optionalHeaderSize)
             {
                 throw new FormatException("NT headers has a size mismatch");
             }
 
-            var optionalHeader = (Image.IOptionalHeader)peHeaders.OptionalHeader;
+            var optionalHeader = input.ReadStructure<TOptionalHeader>();
             if (optionalHeader.Magic != optionalHeader.Signature)
             {
                 throw new FormatException("optional header has bad magic");
-            }
-
-            var directories = new Image.DataDirectory[peHeaders.OptionalHeader.NumberOfRvaAndSizes];
-            for (int i = 0; i < directories.Length; i++)
-            {
-                directories[i] = input.ReadStructure<Image.DataDirectory>();
             }
 
             var sections = new Image.SectionHeader[peHeaders.FileHeader.NumberOfSections];
@@ -192,9 +179,7 @@ namespace Gibbed.PortableExecutable
             instance.BaseFilePosition = basePosition;
             instance.DosHeader = dosHeader;
             instance.CoffHeader = peHeaders.FileHeader;
-            instance.OptionalHeader = peHeaders.OptionalHeader;
-            instance.Directories.Clear();
-            instance.Directories.AddRange(directories);
+            instance.OptionalHeader = optionalHeader;
             instance.Sections.Clear();
             instance.Sections.AddRange(sections);
         }
@@ -244,16 +229,22 @@ namespace Gibbed.PortableExecutable
                 return this._OrdinalLookup[this._NameLookup[name]];
             }
 
-            public static ExportInfo Read(Stream input, BaseExecutable<Image.IOptionalHeader> executable)
+            public static ExportInfo Read(Stream input, BaseExecutable<TOptionalHeader> executable)
             {
                 var instance = new ExportInfo();
-                if (executable.Directories.Count < 1 ||
-                    executable.Directories[0].VirtualAddress == 0 || executable.Directories[0].Size == 0)
+                if (executable.OptionalHeader.NumberOfRvaAndSizes < 1)
                 {
                     return instance;
                 }
 
-                var fileOffset = executable.GetFileOffset(executable.Directories[0].VirtualAddress, true);
+                var virtualAddress = executable.OptionalHeader.DataDirectories[0].VirtualAddress;
+                var size = executable.OptionalHeader.DataDirectories[0].Size;
+                if (virtualAddress == 0 || size == 0)
+                {
+                    return instance;
+                }
+
+                var fileOffset = executable.GetFileOffset(virtualAddress, true);
 
                 input.Position = executable.BaseFilePosition + fileOffset;
                 var exportDirectory = input.ReadStructure<Image.ExportDirectory>();

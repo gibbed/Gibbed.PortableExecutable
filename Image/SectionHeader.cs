@@ -46,6 +46,10 @@ namespace Gibbed.PortableExecutable.Image
         {
             get
             {
+                if (this.NameBytes == null)
+                {
+                    return null;
+                }
                 var end = Array.IndexOf<byte>(this.NameBytes, 0);
                 if (end < 0)
                 {
