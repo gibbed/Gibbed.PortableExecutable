@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <GibbedPortableExecutable_TargetFrameworksToBuild>net40</GibbedPortableExecutable_TargetFrameworksToBuild>
+  </PropertyGroup>
+</Project>
